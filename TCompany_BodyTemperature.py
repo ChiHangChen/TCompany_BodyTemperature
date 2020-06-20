@@ -5,16 +5,14 @@ import requests
 from bs4 import BeautifulSoup
 import schedule
 
-print("--------------程式執行中--------------")
-
-# -----------工號-----------
+# 工號
 EmployeeID = "000000"
-# -----------程式每日觸發時間(每日填表時間)-----------
+# 程式每日觸發時間(每日填表時間)
 trigger_time = "08:00"
 
 
 
-
+print("--------------程式執行中--------------")
 base_url = 'https://zh.surveymonkey.com/r/EmployeeHealthCheck'
 headers = {
     'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
