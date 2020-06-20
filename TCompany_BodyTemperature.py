@@ -5,7 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 import schedule
 
-
+print("--------------程式執行中--------------")
 
 # -----------工號-----------
 EmployeeID = "000000"
@@ -59,11 +59,29 @@ def main():
         print("-----------填表失敗-----------")
         print("Please report this issue to https://github.com/ChiHangChen/TCompany_BodyTemperature/issues")
 
-
+def print_rest_time():
+    now_datetime = datetime.datetime.now()
+    now_str = now_datetime.strftime("%Y-%m-%d %H:%M")
+    today_trigger = now_str[:11]+"{:02d}".format(int(trigger_time.split(":")[0]))
+    today_trigger += ":"+trigger_time.split(":")[1]
+    today_trigger_datetime = datetime.datetime.strptime(today_trigger,"%Y-%m-%d %H:%M")
+    now_datetime = datetime.datetime.now()
+    if now_datetime > today_trigger_datetime:
+        tom_trigger_datetime = today_trigger_datetime+datetime.timedelta(days=1)
+        trigger_delta = (tom_trigger_datetime-now_datetime).seconds
+    else:
+        trigger_delta = (today_trigger_datetime-now_datetime).seconds
+    trigger_delta_hour = trigger_delta/3600
+    trigger_delta_minutes = int((trigger_delta_hour-int(trigger_delta_hour))*60)
+    print("距離下次填表時間還有 : {} 小時 {} 分鐘".format(int(trigger_delta_hour),trigger_delta_minutes))
+    
 if __name__=="__main__":
+    print_interval = 5 # minute
     schedule.every().day.at(trigger_time).do(main)
+    now = datetime.datetime.now()-datetime.timedelta(minutes = 5)
     while True:
         schedule.run_pending()
-        print()
+        if (datetime.datetime.now()-now).seconds/60 >= print_interval:
+            print_rest_time()
+            now = datetime.datetime.now()
         time.sleep(30)
-
