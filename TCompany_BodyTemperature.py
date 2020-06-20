@@ -74,12 +74,12 @@ def print_rest_time():
     print("距離下次填表時間還有 : {} 小時 {} 分鐘".format(int(trigger_delta_hour),trigger_delta_minutes))
     
 if __name__=="__main__":
-    print_interval = 5 # minute
+    print_interval = 30 # minute
     schedule.every().day.at(trigger_time).do(main)
-    now = datetime.datetime.now()-datetime.timedelta(minutes = 5)
+    now = datetime.datetime.now()-datetime.timedelta(minutes = print_interval)
     while True:
         schedule.run_pending()
         if (datetime.datetime.now()-now).seconds/60 >= print_interval:
             print_rest_time()
             now = datetime.datetime.now()
-        time.sleep(30)
+        time.sleep(30) #second
