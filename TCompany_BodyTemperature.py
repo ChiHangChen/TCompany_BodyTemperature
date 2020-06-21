@@ -5,8 +5,8 @@ import requests
 from bs4 import BeautifulSoup
 import schedule
 
-# 工號
-EmployeeID = "000000"
+# 工號(可以多人)
+EmployeeIDs = ["000000"]
 # 程式每日觸發時間(每日填表時間)
 trigger_time = "08:00"
 
@@ -40,22 +40,23 @@ def get_data(EmployeeID, temperature, survey_data, start_time, end_time):
 
 
 def main():
-    session = requests.session()
-    soup = BeautifulSoup(session.get(base_url).content, "html.parser")
-    survey_data = soup.find(id="survey_data")['value']
-    start_time = round(time.time())
-    end_time = start_time+15120
-    temperature = round(np.random.uniform(36.3,37.1),1)
-    data = get_data(EmployeeID, temperature, survey_data, start_time, end_time)
-    response = session.post(base_url, data=data, headers=headers, params=params)
-    if response.history:
-        print("-----------填表完成-----------")
-        print("填表時間 : {}".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M")))
-        print("工號 : {}".format(EmployeeID))
-        print("體溫 : {}".format(temperature))
-    else:
-        print("-----------填表失敗-----------")
-        print("Please report this issue to https://github.com/ChiHangChen/TCompany_BodyTemperature/issues")
+    for EmployeeID in EmployeeIDs:
+        session = requests.session()
+        soup = BeautifulSoup(session.get(base_url).content, "html.parser")
+        survey_data = soup.find(id="survey_data")['value']
+        start_time = round(time.time())
+        end_time = start_time+15120
+        temperature = round(np.random.uniform(36.3,37.1),1)
+        data = get_data(EmployeeID, temperature, survey_data, start_time, end_time)
+        response = session.post(base_url, data=data, headers=headers, params=params)
+        if response.history:
+            print("-----------填表完成-----------")
+            print("填表時間 : {}".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M")))
+            print("工號 : {}".format(EmployeeID))
+            print("體溫 : {}".format(temperature))
+        else:
+            print("-----------填表失敗-----------")
+            print("Please report this issue to https://github.com/ChiHangChen/TCompany_BodyTemperature/issues")
 
 def print_rest_time():
     now_datetime = datetime.datetime.now()
