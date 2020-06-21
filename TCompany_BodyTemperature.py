@@ -6,9 +6,9 @@ from bs4 import BeautifulSoup
 import schedule
 
 # 工號(可以多人)
-EmployeeIDs = ["000000"]
+EmployeeIDs = ["000000","000001","000002"]
 # 程式每日觸發時間(每日填表時間)
-trigger_time = "08:00"
+trigger_time = "06:30"
 
 
 
@@ -57,6 +57,7 @@ def main():
         else:
             print("-----------填表失敗-----------")
             print("Please report this issue to https://github.com/ChiHangChen/TCompany_BodyTemperature/issues")
+        time.sleep(5)
 
 def print_rest_time():
     now_datetime = datetime.datetime.now()
