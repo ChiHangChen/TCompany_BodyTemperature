@@ -1,12 +1,12 @@
 import datetime
 import time
-import numpy as np
+import random
 import requests 
 from bs4 import BeautifulSoup
 import schedule
 
 # 工號(可以多人)
-EmployeeIDs = ["000000","000001","000002"]
+EmployeeIDs = ["000000"]
 # 程式每日觸發時間(每日填表時間)
 trigger_time = "06:30"
 
@@ -46,7 +46,7 @@ def main():
         survey_data = soup.find(id="survey_data")['value']
         start_time = round(time.time())
         end_time = start_time+15120
-        temperature = round(np.random.uniform(36.3,37.1),1)
+        temperature = round(random.uniform(36.3,37.1),1)
         data = get_data(EmployeeID, temperature, survey_data, start_time, end_time)
         response = session.post(base_url, data=data, headers=headers, params=params)
         if response.history:
